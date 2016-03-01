@@ -41,18 +41,22 @@
     "md5": "^2.0.0",
     "memjs": "^0.9.0",
     "mongoose": "^4.4.5",
+    "react": "^0.14.7",
+    "reactify": "^1.1.1",
     "socket.io": "^1.4.5"
   },
   "devDependencies": {
     "babel-eslint": "^5.0.0",
     "babel-register": "^6.5.2",
+    "browserify": "^13.0.0",
     "chai": "^3.5.0",
     "chokidar-cli": "^1.2.0",
     "eslint": "^2.2.0",
     "eslint-plugin-if-in-test": "^0.2.0",
     "mocha": "^2.4.5",
     "node-dev": "^3.1.0",
-    "parallelshell": "^2.0.0"
+    "parallelshell": "^2.0.0",
+    "watchify": "^3.7.0"
   },
   "repository": {
     "type": "git",
