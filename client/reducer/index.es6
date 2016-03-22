@@ -2,10 +2,14 @@ const debug = require("debug")("semirara:reducer");
 
 export default function user(state, action){
   debug(`action.type = ${action.type}`);
+  state.page.editByMe = false;
   switch(action.type){
-  case "editor:text":
   case "page:text":
-    state.page.text = action.value.toUpperCase();
+    state.page.editByMe = true;
+    state.page.text = action.value;
+    break;
+  case "page:text:received":
+    state.page.text = action.value;
     break;
   }
   debug(state);

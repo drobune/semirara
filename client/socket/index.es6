@@ -10,17 +10,14 @@ io.on("connect", () => {
 });
 
 io.on("page:text", (data) => {
-  debug(data);
-  store.dispatch({type: "page:text", value: data});
+  debug("received: " + data);
+  store.dispatch({type: "page:text:received", value: data});
 });
-
-let lastText = "";
 
 store.subscribe(() => {
   const state = store.getState();
-  if(lastText !== state.page.text){
+  if(state.page.editByMe){
     debug(state.page.text);
     io.emit("page:text", state.page.text);
   }
-  lastText = state.page.text;
 });
