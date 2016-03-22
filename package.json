@@ -10,7 +10,7 @@
   "scripts": {
     "prestart": "npm run build && npm run browserify",
     "start": "node server/run.js",
-    "start:dev": "DEBUG=* node-dev server/run.js",
+    "start:dev": "DEBUG=semirara*,koa* node-dev server/run.js",
     "test": "npm run eslint && npm run mocha",
     "mocha": "mocha */test/*.es6 --compilers js:babel-register",
     "eslint": "eslint server/src/{*,**/*}.es6 client/{*,**/*}.{es6,jsx}",
