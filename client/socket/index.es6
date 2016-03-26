@@ -4,8 +4,6 @@ import SocketIO from "socket.io-client";
 import {getStore} from "../store";
 const store = getStore();
 
-import {diffpatch} from "../lib/diffpatch";
-
 const io = SocketIO();
 io.on("connect", () => {
   debug("connect");
