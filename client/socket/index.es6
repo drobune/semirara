@@ -8,16 +8,26 @@ const io = SocketIO();
 io.on("connect", () => {
   debug("connect");
   const state = store.getState();
-  io.emit("page:get", {number: state.page.number});
+  if(state.page._id){
+    io.emit("page:get", {_id: state.page._id});
+  }
 });
 
 io.on("page:get:result", (page) => {
   debug(page);
+  if(page.error && page._id === store.getState().page._id){
+    return store.dispatch({type: "page:_id", value: null});
+  }
   store.dispatch({type: "page", value: page});
 });
 
 io.on("disconnect", () => {
   debug("disconnect");
+});
+
+io.on("page:_id", (page) => {
+  if(!page._id) return;
+  store.dispatch({type: "page:_id", value: page._id});
 });
 
 io.on("page:lines:diff", (data) => {
@@ -28,8 +38,7 @@ io.on("page:lines:diff", (data) => {
 store.subscribe(() => {
   const state = store.getState();
   const diff = state.page.diff;
-  const number = state.page.number;
-  if(diff && number){
-    io.emit("page:lines:diff", {diff, number});
-  }
+  const _id = state.page._id;
+  if(!diff) return;
+  io.emit("page:lines:diff", {diff, _id});
 });

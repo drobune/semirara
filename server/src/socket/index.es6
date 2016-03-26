@@ -12,22 +12,26 @@ export function use(app){
 
   io.on("connection", (socket) => {
     socket.on("page:get", async (data) => {
-      const number = data.number;
-      if(typeof number !== "number") return;
-      const page = await Page.findOne({number}) || new Page({number});
-      socket.emit("page:get:result", page.toHash());
+      const _id = data._id;
+      debug(`page:get ${_id}`);
+      const page = await Page.findOne({_id});
+      if(!page){
+        return socket.emit("page:get:result", {error: "notfound", _id});
+      }
+      socket.emit("page:get:result", page);
     });
 
     socket.on("page:lines:diff", async (data) => {
       debug(data);
       const diff = data.diff;
-      const number = data.number;
-      if(!diff || typeof number !== "number") return;
-      socket.broadcast.emit("page:lines:diff", {diff, number});
-      const page = await Page.findOne({number}) || new Page({number});
-      debug(page);
+      const _id = data._id;
+      if(!diff) return;
+      const page = await Page.findOne({_id}) || new Page();
       page.lines = diffpatch.patch(clone(page.lines), diff);
-      page.save();
+      await page.save();
+      debug(page);
+      if(!_id) socket.emit("page:_id", {_id: page._id});
+      socket.broadcast.emit("page:lines:diff", {diff, _id: page._id});
     });
   });
 }

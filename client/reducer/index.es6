@@ -9,6 +9,9 @@ export default function user(state, action){
   case "page":
     state.page = action.value;
     break;
+  case "page:_id":
+    state.page._id = action.value;
+    break;
   case "page:lines":
     state.page.diff = diffpatch.diff(state.page.lines, action.value);
     state.page.lines = action.value;
