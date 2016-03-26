@@ -7,6 +7,17 @@ const store = getStore();
 const io = SocketIO();
 io.on("connect", () => {
   debug("connect");
+  const state = store.getState();
+  io.emit("page:get", {number: state.page.number});
+});
+
+io.on("page:get:result", (page) => {
+  debug(page);
+  store.dispatch({type: "page", value: page});
+});
+
+io.on("disconnect", () => {
+  debug("disconnect");
 });
 
 io.on("page:lines:diff", (data) => {
@@ -16,7 +27,9 @@ io.on("page:lines:diff", (data) => {
 
 store.subscribe(() => {
   const state = store.getState();
-  if(state.page.diff){
-    io.emit("page:lines:diff", {diff: state.page.diff});
+  const diff = state.page.diff;
+  const number = state.page.number;
+  if(diff && number){
+    io.emit("page:lines:diff", {diff, number});
   }
 });

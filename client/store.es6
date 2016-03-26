@@ -7,7 +7,8 @@ const store = createStore(reducer, {
   user: window.user,
   app: window.app,
   page: {
-    lines: [ "" ]
+    lines: [ "" ],
+    number: window.page.number
   }
 });
 

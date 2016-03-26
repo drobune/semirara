@@ -3,8 +3,9 @@ html
   head
     title= app.name
     script.
-      var user = !{JSON.stringify(user)};
-      var app = !{JSON.stringify(app)};
+      window.user = !{JSON.stringify(user)};
+      window.app = !{JSON.stringify(app)};
+      window.page = {number: 1};
   body
     div#app
     script(src="/dist/index.js")
