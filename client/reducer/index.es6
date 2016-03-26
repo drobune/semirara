@@ -6,12 +6,12 @@ export default function user(state, action){
   debug(`action.type = ${action.type}`);
   delete state.page.diff;
   switch(action.type){
-  case "page:text":
-    state.page.diff = diffpatch.diff(state.page.text, action.value);
-    state.page.text = action.value;
+  case "page:lines":
+    state.page.diff = diffpatch.diff(state.page.lines, action.value);
+    state.page.lines = action.value;
     break;
-  case "page:text:patch":
-    state.page.text = diffpatch.patch(clone(state.page.text), action.value);
+  case "page:lines:patch":
+    state.page.lines = diffpatch.patch(clone(state.page.lines), action.value);
     break;
   }
   debug(state);

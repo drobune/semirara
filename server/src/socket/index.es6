@@ -5,10 +5,10 @@ export function use(app){
   const io = app.context.io;
 
   io.on("connection", (socket) => {
-    socket.on("page:text:diff", (data) => {
+    socket.on("page:lines:diff", (data) => {
       debug(data);
       if(!data.diff) return;
-      socket.broadcast.emit("page:text:diff", data);
+      socket.broadcast.emit("page:lines:diff", data);
     });
   });
 }
