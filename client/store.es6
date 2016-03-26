@@ -7,8 +7,7 @@ const store = createStore(reducer, {
   user: window.user,
   app: window.app,
   page: {
-    text: [ "" ],
-    editByMe: false
+    text: [ "" ]
   }
 });
 
