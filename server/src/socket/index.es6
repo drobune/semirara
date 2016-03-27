@@ -11,6 +11,8 @@ export function use(app){
   const io = app.context.io;
 
   io.on("connection", (socket) => {
+    const pageRoom = new PageRoom(socket);
+
     socket.on("page:get", async (data) => {
       const _id = data._id;
       debug(`page:get ${_id}`);
@@ -18,6 +20,7 @@ export function use(app){
       if(!page){
         return socket.emit("page:get:result", {error: "notfound", _id});
       }
+      pageRoom.join(_id);
       socket.emit("page:get:result", page);
     });
 
@@ -31,7 +34,42 @@ export function use(app){
       await page.save();
       debug(page);
       if(!_id) socket.emit("page:_id", {_id: page._id});
-      socket.broadcast.emit("page:lines:diff", {diff, _id: page._id});
+      pageRoom.join(page._id);
+      socket.broadcast.to(pageRoom.name).emit("page:lines:diff", {diff, _id: page._id});
     });
   });
+}
+
+class PageRoom{
+  constructor(socket){
+    this.socket = socket;
+    this._id = null;
+    socket.once("disconnect", () => {
+      this.leave();
+      this.socket = null;
+    });
+  }
+
+  get name(){
+    return `page:${this._id}`;
+  }
+
+  join(_id){
+    if(_id === this._id) return;
+    if(!isValidPageId(_id)){
+      debug("Invalid page id: " + _id)
+      return;
+    }
+    this.leave();
+    this._id = _id;
+    this.socket.join(this.name);
+    debug(`${this.socket.id} joins room ${this.name}`);
+  }
+
+  leave(){
+    if(!this._id) return;
+    debug(`${this.socket.id} leaves room ${this.name}`);
+    this.socket.leave(this.name);
+    this._id = null;
+  }
 }
