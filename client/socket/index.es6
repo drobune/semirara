@@ -30,9 +30,10 @@ io.on("page:_id", (page) => {
   store.dispatch({type: "page:_id", value: page._id});
 });
 
-io.on("page:lines:diff", (data) => {
-  if(!data.diff) return;
-  store.dispatch({type: "page:lines:patch", value: data.diff});
+io.on("page:lines:diff", (page) => {
+  if(!page.diff) return;
+  if(page._id !== store.getState().page._id) return;
+  store.dispatch({type: "page:lines:patch", value: page.diff});
 });
 
 store.subscribe(() => {
