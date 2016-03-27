@@ -1,7 +1,7 @@
 const debug = require("debug")("semirara:socket");
 
 import mongoose from "mongoose";
-import {isValidPageNumber} from "../model/page";
+import {isValidPageId} from "../model/page";
 const Page = mongoose.model("Page");
 
 import {diffpatch, clone} from "../../../lib/diffpatch";

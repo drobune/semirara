@@ -30,7 +30,7 @@ const pageSchema = new mongoose.Schema({
 });
 
 pageSchema.pre("save", function(next){
-  if(typeof this._id !== "number" || this._id < 1) delete this._id;
+  if(!isValidPageId(this._id)) delete this._id;
   this.updatedAt = Date.now();
   next();
 });
@@ -56,3 +56,7 @@ pageSchema.methods.toHash = function(){
 };
 
 const Page = mongoose.model("Page", pageSchema);
+
+export function isValidPageId(_id){
+  return typeof _id === "number" && _id > 0
+}
