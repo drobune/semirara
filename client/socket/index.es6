@@ -15,8 +15,8 @@ io.on("connect", () => {
 
 io.on("page:get:result", (page) => {
   debug(page);
-  if(page.error && page._id === store.getState().page._id){
-    return store.dispatch({type: "page:_id", value: null});
+  if(page.error){
+    return store.dispatch({type: "page:new"});
   }
   store.dispatch({type: "page", value: page});
 });

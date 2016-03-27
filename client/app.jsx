@@ -24,5 +24,5 @@ const store = getStore();
 store.subscribe(() => {
   const state = store.getState();
   if(location.pageId === state.page._id) return;
-  history.pushState(null, null, "/"+(state.page._id || ""));
+  history.pushState(null, null, "/"+(state.page._id || "new"));
 });

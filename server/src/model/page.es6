@@ -29,15 +29,19 @@ const pageSchema = new mongoose.Schema({
   }
 });
 
+pageSchema.pre("save", function(next){
+  if(typeof this._id !== "number" || this._id < 1) delete this._id;
+  this.updatedAt = Date.now();
+  next();
+});
+
 pageSchema.plugin(autoIncrement.plugin, {
   model: "Page",
   startAt: 1
 });
 
-pageSchema.pre("save", function(next){
-  debug("save!");
-  this.updatedAt = Date.now();
-  next();
+pageSchema.post("save", function(){
+  debug("save! " + this._id);
 });
 
 pageSchema.methods.toHash = function(){

@@ -9,6 +9,9 @@ export default function user(state, action){
   case "page":
     state.page = action.value;
     break;
+  case "page:new":
+    state.page._id = 0;
+    break;
   case "page:_id":
     state.page._id = action.value;
     break;
