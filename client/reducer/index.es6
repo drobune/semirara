@@ -2,7 +2,7 @@ const debug = require("debug")("semirara:reducer");
 
 import {diffpatch, clone} from "../../lib/diffpatch";
 
-export default function user(state, action){
+export default function page(state, action){
   debug(`action.type = ${action.type}`);
   delete state.page.diff;
   switch(action.type){
