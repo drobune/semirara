@@ -31,6 +31,7 @@ io.on("page:_id", (page) => {
 });
 
 io.on("page:lines:diff", (page) => {
+  debug(page);
   if(!page.diff) return;
   if(page._id !== store.getState().page._id) return;
   store.dispatch({type: "page:lines:patch", value: page.diff});

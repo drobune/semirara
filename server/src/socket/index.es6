@@ -25,14 +25,17 @@ export function use(app){
     });
 
     socket.on("page:lines:diff", async (data) => {
+      debug("page:lines:diff");
       debug(data);
       const diff = data.diff;
       const _id = data._id;
       if(!diff) return;
       const page = await Page.findOne({_id}) || new Page();
-      page.lines = diffpatch.patch(clone(page.lines), diff);
-      await page.save();
       debug(page);
+      page.lines = diffpatch.patch(clone(page.lines), diff);
+      const saveRes = await page.save();
+      debug(saveRes);
+      // debug(page);
       if(!_id) socket.emit("page:_id", {_id: page._id});
       pageRoom.join(page._id);
       socket.broadcast.to(pageRoom.name).emit("page:lines:diff", {diff, _id: page._id});
