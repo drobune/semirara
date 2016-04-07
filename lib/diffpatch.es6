@@ -9,5 +9,6 @@ export const diffpatch = JSONDiffPatch.create({
 });
 
 export function clone(obj){
+  if(obj instanceof Array) return obj.concat();
   return Object.assign({}, obj);
 }
