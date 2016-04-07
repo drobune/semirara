@@ -6,14 +6,12 @@ export default function pageReducer(state = {}, action){
   debug(`action.type = ${action.type}`);
   delete state.diff;
   switch(action.type){
+  case "route":
+    if(action.value.wiki) state.wiki = action.value.wiki;
+    if(action.value.page) state.name = action.value.page;
+    break;
   case "page":
     state = action.value;
-    break;
-  case "page:new":
-    state._id = 0;
-    break;
-  case "page:_id":
-    state._id = action.value;
     break;
   case "page:lines":
     state.diff = diffpatch.diff(state.lines, action.value);

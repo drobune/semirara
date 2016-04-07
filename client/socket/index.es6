@@ -4,43 +4,31 @@ import SocketIO from "socket.io-client";
 import {getStore} from "../store";
 const store = getStore();
 
+import ioreq from "socket.io-request";
+
 const io = SocketIO();
-io.on("connect", () => {
+
+window.io = io;
+io.on("connect", async () => {
   debug("connect");
   const state = store.getState();
-  if(state.page._id){
-    io.emit("page:get", {_id: state.page._id});
-  }
-});
-
-io.on("page:get:result", (page) => {
-  debug(page);
-  if(page.error){
-    return store.dispatch({type: "page:new"});
-  }
-  store.dispatch({type: "page", value: page});
+  const pagedata = await ioreq(io).request("getpage");
+  debug(pagedata);
 });
 
 io.on("disconnect", () => {
   debug("disconnect");
 });
 
-io.on("page:_id", (page) => {
-  if(!page._id) return;
-  store.dispatch({type: "page:_id", value: page._id});
-});
-
 io.on("page:lines:diff", (page) => {
   debug(page);
   if(!page.diff) return;
-  if(page._id !== store.getState().page._id) return;
   store.dispatch({type: "page:lines:patch", value: page.diff});
 });
 
 store.subscribe(() => {
   const state = store.getState();
   const diff = state.page.diff;
-  const _id = state.page._id;
   if(!diff) return;
-  io.emit("page:lines:diff", {diff, _id});
+  io.emit("page:lines:diff", {diff});
 });

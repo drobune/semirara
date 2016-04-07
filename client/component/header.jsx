@@ -6,13 +6,13 @@ import Login from "./login";
 export default class Header extends Component{
 
   mapState(state){
-    return {app: state.app};
+    return {page: state.page};
   }
 
   render(){
     return(
       <div>
-        <h1>{this.state.app.name}</h1>
+        <h1>{this.state.page.wiki}::{this.state.page.name}</h1>
         <Login />
       </div>
     );

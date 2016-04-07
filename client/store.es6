@@ -3,14 +3,11 @@ import {createStore} from "redux";
 import reducer from "./reducer/";
 import Debug from "debug";
 
-import "./lib/location";
-
 const store = createStore(reducer, {
   user: window.user,
   app: window.app,
   page: {
-    lines: [ "" ],
-    _id: location.pageId
+    lines: [ "" ]
   }
 });
 
