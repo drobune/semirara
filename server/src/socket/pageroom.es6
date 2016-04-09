@@ -16,6 +16,7 @@ export default class PageRoom{
     return `${this.page.wiki}::${this.page.title}`;
   }
 
+  // leave current room, then join new room.
   join(page){
     if(!page &&
        page.title === this.page.title &&
