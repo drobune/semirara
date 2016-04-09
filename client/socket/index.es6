@@ -29,7 +29,7 @@ io.on("page:lines:diff", (page) => {
 
 store.subscribe(() => {
   const state = store.getState();
-  const diff = state.page.diff;
+  const {title, wiki, diff} = state.page;
   if(!diff) return;
-  io.emit("page:lines:diff", {diff});
+  io.emit("page:lines:diff", {title, wiki, diff});
 });
