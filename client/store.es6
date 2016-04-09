@@ -21,6 +21,18 @@ export class Component extends React.Component{
     return state;
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+    for(let k in nextState){
+      if(typeof nextState[k] === "object" ||
+         this.state[k] !== nextState[k]) return true;
+    }
+    for(let k in nextProps){
+      if(typeof nextProps[k] === "object" ||
+         this.props[k] !== nextProps[k]) return true;
+    }
+    return false;
+  }
+
   componentWillUnmount(){
     this.debug("componentWillUnmount()");
     this.unsubscribeStore();
@@ -39,4 +51,5 @@ export class Component extends React.Component{
     this.debug("constructor()");
     this.state = this.mapState(store.getState());
   }
+
 }
