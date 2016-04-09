@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import autoIncrement from "mongoose-auto-increment";
 autoIncrement.initialize(mongoose.connection);
 
+import {diffpatch, clone} from "../../../lib/diffpatch";
+
 const pageSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -52,6 +54,10 @@ pageSchema.methods.toHash = function(){
     createdAt: this.createdAt
   };
 };
+
+pageSchema.methods.patchLines = function(diff){
+  this.lines = diffpatch.patch(clone(this.lines), diff);
+}
 
 mongoose.model("Page", pageSchema);
 

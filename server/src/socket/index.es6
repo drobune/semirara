@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 const Page = mongoose.model("Page");
 
 import PageRoom from "./pageroom";
-import {diffpatch, clone} from "../../../lib/diffpatch";
 
 export function use(app){
 
@@ -28,7 +27,7 @@ export function use(app){
         pageRoom.join({title, wiki});
         socket.broadcast.to(pageRoom.name).emit("page:lines:diff", {diff});
         const page = await Page.findOne({wiki, title}) || new Page({wiki, title});
-        page.lines = diffpatch.patch(clone(page.lines), diff);
+        page.patchLines(diff);
         page.save();
       }
       catch(err){
