@@ -14,7 +14,7 @@ io.on("connect", async () => {
   const state = store.getState();
   const {wiki, title} = state.page;
   const page = await ioreq(io).request("getpage", {wiki, title});
-  debug(page);
+  store.dispatch({type: "page", value: page});
 });
 
 io.on("disconnect", () => {

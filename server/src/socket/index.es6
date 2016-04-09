@@ -20,15 +20,29 @@ export function use(app){
       debug(data);
       const {title, wiki, diff} = data;
       if(!title || !wiki || !diff) return;
-      pageRoom.join({title, wiki});
-      socket.broadcast.to(pageRoom.name).emit("page:lines:diff", {diff});
+      try{
+        pageRoom.join({title, wiki});
+        socket.broadcast.to(pageRoom.name).emit("page:lines:diff", {diff});
+        const page = await Page.findOne({wiki, title}) || new Page({wiki, title});
+        console.log(page);
+        page.lines = diffpatch.patch(clone(page.lines), diff);
+        page.save();
+      }
+      catch(err){
+        console.error(err.stack || err);
+      }
     });
 
     ioreq(socket).response("getpage", async (req, res) => {
       const {wiki, title} = req;
-      pageRoom.join({title, wiki});
-      const page = await Page.findOne({wiki, title}) || new Page({wiki, title});
-      res(page);
+      try{
+        pageRoom.join({title, wiki});
+        const page = await Page.findOne({wiki, title}) || new Page({wiki, title});
+        res(page);
+      }
+      catch(err){
+        console.error(err.stack || err);
+      }
     })
   });
 }
