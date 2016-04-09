@@ -52,7 +52,7 @@ pageSchema.methods.toHash = function(){
   };
 };
 
-const Page = mongoose.model("Page", pageSchema);
+mongoose.model("Page", pageSchema);
 
 export function isValidPageId(_id){
   return typeof _id === "number" && _id > 0

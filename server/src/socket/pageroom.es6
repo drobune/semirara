@@ -1,7 +1,5 @@
 const debug = require("debug")("semirara:socket:pageroom");
 
-import {isValidPageId} from "../model/page";
-
 export default class PageRoom{
   constructor(socket){
     this.socket = socket;

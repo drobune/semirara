@@ -28,7 +28,6 @@ export function use(app){
         pageRoom.join({title, wiki});
         socket.broadcast.to(pageRoom.name).emit("page:lines:diff", {diff});
         const page = await Page.findOne({wiki, title}) || new Page({wiki, title});
-        console.log(page);
         page.lines = diffpatch.patch(clone(page.lines), diff);
         page.save();
       }

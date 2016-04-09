@@ -1,5 +1,3 @@
-const debug = require("debug")("semirara:reducer");
-
 import {combineReducers} from "redux";
 import page from "./page";
 
