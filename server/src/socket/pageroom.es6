@@ -17,7 +17,9 @@ export default class PageRoom{
   }
 
   join(page){
-    if(page === this.page) return;
+    if(!page &&
+       page.title === this.page.title &&
+       page.wiki === this.page.wiki) return;
     this.leave();
     this.page = page;
     this.socket.join(this.name);
