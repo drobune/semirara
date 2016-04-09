@@ -5,13 +5,13 @@ export function parse(path){
   const m = path.match(/^\/([^\/]+)\/([^\/]+)/);
   if(m){
     route.wiki = m[1];
-    route.page = m[2];
+    route.title = m[2];
   }
   return route;
 }
 
 export function build(route){
-  return `/${route.wiki}/${route.page}`;
+  return `/${route.wiki}/${route.title}`;
 }
 
 import {getStore} from "./store";
@@ -19,15 +19,14 @@ const store = getStore();
 
 store.subscribe(() => {
   const state = store.getState();
-  const wiki = state.page.wiki;
-  const page = state.page.name;
-  document.title = `${wiki}::${page}`;
-  if(location.pathname !== build({wiki, page})){
-    history.pushState(null, null, build({wiki, page}));
+  const {wiki, title} = state.page;
+  document.title = `${wiki}::${title}`;
+  if(location.pathname !== build({wiki, title})){
+    history.pushState(null, null, build({wiki, title}));
   }
 });
 
 store.dispatch({
   type:"route",
-  value: Object.assign({wiki: "general", page: "test"}, parse(location.pathname))
+  value: Object.assign({wiki: "general", title: "test"}, parse(location.pathname))
 });

@@ -22,5 +22,11 @@ export function use(app){
       if(!diff) return;
       socket.broadcast.emit("page:lines:diff", {diff});
     });
+
+    ioreq(socket).response("getpage", async (req, res) => {
+      const {wiki, title} = req;
+      const page = await Page.findOne({wiki, title}) || new Page({wiki, title});
+      res(page);
+    })
   });
 }

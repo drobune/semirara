@@ -8,7 +8,7 @@ export default function pageReducer(state = {}, action){
   switch(action.type){
   case "route":
     if(action.value.wiki) state.wiki = action.value.wiki;
-    if(action.value.page) state.name = action.value.page;
+    if(action.value.title) state.title = action.value.title;
     break;
   case "page":
     state = action.value;

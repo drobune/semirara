@@ -12,8 +12,9 @@ window.io = io;
 io.on("connect", async () => {
   debug("connect");
   const state = store.getState();
-  const pagedata = await ioreq(io).request("getpage");
-  debug(pagedata);
+  const {wiki, title} = state.page;
+  const page = await ioreq(io).request("getpage", {wiki, title});
+  debug(page);
 });
 
 io.on("disconnect", () => {

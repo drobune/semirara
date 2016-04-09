@@ -7,13 +7,11 @@ autoIncrement.initialize(mongoose.connection);
 const pageSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
-    default: "untitled"
+    required: true
   },
   wiki: {
     type: String,
-    required: true,
-    default: "general"
+    required: true
   },
   lines: {
     type: Array,
@@ -30,7 +28,6 @@ const pageSchema = new mongoose.Schema({
 });
 
 pageSchema.pre("save", function(next){
-  if(!isValidPageId(this._id)) delete this._id;
   this.updatedAt = Date.now();
   next();
 });

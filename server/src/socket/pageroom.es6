@@ -5,7 +5,7 @@ import {isValidPageId} from "../model/page";
 export default class PageRoom{
   constructor(socket){
     this.socket = socket;
-    this._id = null;
+    this.page = null;
     socket.once("disconnect", () => {
       this.leave();
       this.socket = null;
@@ -13,25 +13,21 @@ export default class PageRoom{
   }
 
   get name(){
-    return `page:${this._id}`;
+    return `${this.page.wiki}::${this.page.title}`;
   }
 
-  join(_id){
-    if(_id === this._id) return;
-    if(!isValidPageId(_id)){
-      debug("Invalid page id: " + _id)
-      return;
-    }
+  join(page){
+    if(page === this.page) return;
     this.leave();
-    this._id = _id;
+    this.page = page;
     this.socket.join(this.name);
     debug(`${this.socket.id} joins room ${this.name}`);
   }
 
   leave(){
-    if(!this._id) return;
+    if(!this.page) return;
     debug(`${this.socket.id} leaves room ${this.name}`);
     this.socket.leave(this.name);
-    this._id = null;
+    this.page = null;
   }
 }
