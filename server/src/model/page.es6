@@ -34,6 +34,7 @@ pageSchema.pre("save", function(next){
 
 pageSchema.plugin(autoIncrement.plugin, {
   model: "Page",
+  field: "number",
   startAt: 1
 });
 
@@ -45,7 +46,7 @@ pageSchema.methods.toHash = function(){
   return {
     wiki: this.wiki,
     title: this.title,
-    _id: this._id,
+    number: this.number,
     lines: this.lines,
     updatedAt: this.updatedAt,
     createdAt: this.createdAt
