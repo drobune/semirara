@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 
+import ClickHold from "./clickhold";
 import compile from "../syntax";
 
 export default class EditorLine extends Component{
@@ -29,9 +30,10 @@ export default class EditorLine extends Component{
     }
     else{
       return (
-        <span onClick={e => { e.stopPropagation(); this.props.onStartEdit(); }}>
+        <ClickHold onClickHold={this.props.onStartEdit} interval={500}>
           {compile(this.props.value)}
-        </span>);
+        </ClickHold>
+      );
     }
   }
 
