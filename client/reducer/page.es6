@@ -1,4 +1,5 @@
-import {diffpatch, clone} from "../../server/src/lib/diffpatch";
+import clone from "clone";
+import {diffpatch} from "../../server/src/lib/diffpatch";
 import Line from "../line";
 
 export default function pageReducer(state = {}, action){
