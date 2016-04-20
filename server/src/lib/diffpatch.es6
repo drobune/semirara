@@ -4,7 +4,7 @@ import md5 from "md5";
 export const diffpatch = JSONDiffPatch.create({
   // https://github.com/benjamine/jsondiffpatch/blob/master/docs/arrays.md
   objectHash: (obj, index) => {
-    return md5(obj);
+    return md5(obj.value + obj.indent);
   }
 });
 
