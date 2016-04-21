@@ -126,6 +126,9 @@ export default function pageReducer(state = {}, action){
   case "indentBlock:increment":
     getBlock(state.lines, state.editline, line => line.indent++);
     break;
+  case "caret":
+    state.caret = action.value;
+    break;
   }
   return state;
 }

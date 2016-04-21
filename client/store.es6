@@ -11,7 +11,8 @@ export const store = createStore(
     user: window.user,
     page: {
       lines: [ new Line ],
-      editline: null
+      editline: null,
+      caret: {start:0, end:0}
     },
     pagelist: [ ]
   },

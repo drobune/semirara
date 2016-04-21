@@ -17,7 +17,8 @@ export default class EditorLine extends Component{
       edit: React.PropTypes.bool,
       onStartEdit: React.PropTypes.func,
       onChange: React.PropTypes.func,
-      onKeyDown: React.PropTypes.func
+      onKeyDown: React.PropTypes.func,
+      caret: React.PropTypes.object
     };
   }
 
@@ -52,7 +53,10 @@ export default class EditorLine extends Component{
 
   focusInput(){
     if(!this.props.edit) return;
-    ReactDOM.findDOMNode(this.refs.input).focus();
+    const input = ReactDOM.findDOMNode(this.refs.input);
+    input.focus();
+    input.selectionStart = this.props.caret.start;
+    input.selectionEnd = this.props.caret.end;
   }
 
 }

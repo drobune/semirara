@@ -39,6 +39,7 @@ export default class Editor extends Component {
                onStartEdit={() => this.startEdit(i)}
                onChange={value => store.dispatch({type: "updateLine", value})}
                onKeyDown={e => this.onKeyDown(e)}
+               caret={this.state.page.caret}
               />
           </li>
         );
@@ -104,6 +105,7 @@ export default class Editor extends Component {
       store.dispatch({type: "indent:decrement"});
       break;
     }
+    store.dispatch({type: "caret", value: {start: e.target.selectionStart, end: e.target.selectionEnd}});
   }
 
 }
