@@ -88,7 +88,7 @@ export default function pageReducer(state = {}, action){
 
 
 function getBlock(lines, start, func){
-  const indent = lines[start];
+  const indent = lines[start].indent;
   const block = {
     indent, start, end: start,
     get length(){ return this.end - this.start + 1; }
@@ -96,7 +96,7 @@ function getBlock(lines, start, func){
   if(typeof func === "function") func(lines[start]);
   for(let i = start+1; i < lines.length; i++){
     let line = lines[i];
-    if(line.indent <= indent) break;
+    if(indent >= line.indent) break;
     if(typeof func === "function") func(line);
     block.end = i;
   }
