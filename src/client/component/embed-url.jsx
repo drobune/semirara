@@ -1,12 +1,30 @@
 import React, {Component, PropTypes} from "react";
+import md5 from "md5";
+import hasDom from "has-dom";
 
 export const URLTypes = {
-  unknown: 0b11111111,
-  text:    0b00000001,
-  image:   0b00000010,
-  video:   0b00000100,
-  audio:   0b00001000
+  unknown: 0b1111,
+  text:    0b0001,
+  image:   0b0010,
+  video:   0b0100,
+  audio:   0b1000
 };
+
+function getLocalStorageKey(url){
+  if(!(/^https?:\/\/[^\s]+$/.test(url))) throw new Error(`${url} is not URL`);
+  return `url-type:${md5(url)}`;
+}
+
+function getTypeFromLocalStorage(url){
+  if(hasDom() && localStorage) return parseInt(localStorage[getLocalStorageKey(url)]);
+  return null;
+}
+
+function saveTypeToLocalStorage(url, type){
+  if(!hasDom() || !localStorage) return;
+  if(typeof type !== "number") throw new Error('"type" must be number');
+  localStorage[getLocalStorageKey(url)] = type;
+}
 
 export default class EmbedURL extends Component {
 
@@ -17,20 +35,23 @@ export default class EmbedURL extends Component {
     };
   }
 
-  static get defaultProps(){
-    return {
-      type: URLTypes.unknown
-    };
-  }
-
   componentWillMount(){
-    this.state = {
-      type: this.props.type
-    };
+    let type;
+    if(this.props.type){
+      type = this.props.type;
+    }
+    else{
+      type = getTypeFromLocalStorage(this.props.url) || URLTypes.unknown;
+    }
+    this.state = { type };
   }
 
   shouldComponentUpdate(nextProps, nextStates){
     return this.state.type !== nextStates.type;
+  }
+
+  componentDidUpdate(){
+    saveTypeToLocalStorage(this.props.url, this.state.type);
   }
 
   constructor(){
