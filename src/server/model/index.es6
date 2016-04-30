@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import "./user";
 import "./page";
+import "./urltype";
 
 const url =
         process.env.MONGOLAB_URI ||

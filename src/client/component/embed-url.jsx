@@ -10,20 +10,36 @@ export const URLTypes = {
   audio:   0b1000
 };
 
+function isURL(url){
+  return /^https?:\/\/[^\s]+$/.test(url);
+}
+
 function getLocalStorageKey(url){
-  if(!(/^https?:\/\/[^\s]+$/.test(url))) throw new Error(`${url} is not URL`);
+  if(!isURL(url)) throw new Error(`${url} is not URL`);
   return `url-type:${md5(url)}`;
 }
 
-function getTypeFromLocalStorage(url){
+export function getURLType(url){
+  if(!isURL(url)) throw new Error(`${url} is not URL`);
   if(hasDom() && localStorage) return parseInt(localStorage[getLocalStorageKey(url)]);
   return null;
 }
 
-function saveTypeToLocalStorage(url, type){
-  if(!hasDom() || !localStorage) return;
+export function saveURLType(url, type){
+  if(!isURL(url)) throw new Error(`${url} is not URL`);
   if(typeof type !== "number") throw new Error('"type" must be number');
-  localStorage[getLocalStorageKey(url)] = type;
+  if(hasDom() && localStorage){
+    localStorage[getLocalStorageKey(url)] = type;
+  }
+  for(let func of onURLTypeListeners){
+    func(url, type);
+  }
+}
+
+const onURLTypeListeners = [];
+export function onURLType(listener){
+  if(typeof listener !== "function") throw new Error("argument is not function");
+  onURLTypeListeners.push(listener);
 }
 
 export default class EmbedURL extends Component {
@@ -41,7 +57,7 @@ export default class EmbedURL extends Component {
       type = this.props.type;
     }
     else{
-      type = getTypeFromLocalStorage(this.props.url) || URLTypes.unknown;
+      type = getURLType(this.props.url) || URLTypes.unknown;
     }
     this.state = { type };
   }
@@ -51,7 +67,7 @@ export default class EmbedURL extends Component {
   }
 
   componentDidUpdate(){
-    saveTypeToLocalStorage(this.props.url, this.state.type);
+    saveURLType(this.props.url, this.state.type);
   }
 
   constructor(){
