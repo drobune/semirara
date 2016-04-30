@@ -44,19 +44,6 @@ export default class EmbedURL extends Component {
   render(){
     const {url} = this.props;
     switch(this.state.type){
-    case URLTypes.undefined: {
-      return (
-        <x-embed-url>
-          <img
-             src={url}
-             style={{display: "none"}}
-             onLoad={this.onImage}
-             onError={this.onNotImage}
-             />
-          <a href={url}>{url}</a>
-        </x-embed-url>
-      );
-    }
     case URLTypes.image: {
       return (
         <x-embed-url>
@@ -67,6 +54,19 @@ export default class EmbedURL extends Component {
     case URLTypes.text: {
       return (
         <x-embed-url>
+          <a href={url}>{url}</a>
+        </x-embed-url>
+      );
+    }
+    default: {
+      return (
+        <x-embed-url>
+          <img
+             src={url}
+             style={{display: "none"}}
+             onLoad={this.onImage}
+             onError={this.onNotImage}
+             />
           <a href={url}>{url}</a>
         </x-embed-url>
       );
