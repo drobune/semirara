@@ -30,10 +30,15 @@ export default class EmbedURL extends Component {
   constructor(){
     super();
     this.onImage = this.onImage.bind(this);
+    this.onNotImage = this.onNotImage.bind(this);
   }
 
   onImage(e){
     this.setState({type: URLTypes.image});
+  }
+
+  onNotImage(e){
+    this.setState({type: URLTypes.text});
   }
 
   render(){
@@ -46,7 +51,7 @@ export default class EmbedURL extends Component {
              src={url}
              style={{display: "none"}}
              onLoad={this.onImage}
-             onError={e => console.error("onerror")}
+             onError={this.onNotImage}
              />
           <a href={url}>{url}</a>
         </x-embed-url>
@@ -56,6 +61,13 @@ export default class EmbedURL extends Component {
       return (
         <x-embed-url>
           <img src={url} />
+        </x-embed-url>
+      );
+    }
+    case URLTypes.text: {
+      return (
+        <x-embed-url>
+          <a href={url}>{url}</a>
         </x-embed-url>
       );
     }
