@@ -1,5 +1,6 @@
 import React from "react";
 import {validateTitle, validateWiki, validateRoute} from "../../../share/route";
+import EmbedURL from "../embed-url";
 
 export function removeMarkup(str){
   return str.replace(/\[{2,3}([^\]]+)\]{2,3}/gi, (_, inside) => inside);
@@ -72,15 +73,10 @@ export function createCompiler({action, state}){
   );
 
   const externalLink = gyazz2jsx(
-      /\[{2}(https?:\/\/[^\s]+)\]{2}/, ([source, url], attrs) => {
-        return <a href={url} target="_blank" {...attrs}>{url}</a>;
-      }
-  );
-
-  const image = gyazz2jsx(/\[{2}(https?:\/\/[^\s]+)\.(jpe?g|gif|png)\]{2}/i, (m, attrs) => <img src={`${m[1]}.${m[2]}`} title={m[0]} {...attrs} />);
+      /\[{2}(https?:\/\/[^\s]+)\]{2}/, ([source, url], attrs) => <EmbedURL url={url} />);
 
   return (str) => {
-    const methods = [strong, externalLinkWithImage, externalLinkWithDescription, image, externalLink, wikiTitleLink, wikiLink, titleLink];
+    const methods = [strong, externalLinkWithImage, externalLinkWithDescription, externalLink, wikiTitleLink, wikiLink, titleLink];
     const chunks = split(str);
     let i = 0;
     return chunks.map((chunk) => {
