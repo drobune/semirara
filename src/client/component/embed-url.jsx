@@ -1,9 +1,11 @@
 import React, {Component, PropTypes} from "react";
 
 export const URLTypes = {
-  undefined: 0,
-  text: 1,
-  image: 2
+  unknown: 0b11111111,
+  text:    0b00000001,
+  image:   0b00000010,
+  video:   0b00000100,
+  audio:   0b00001000
 };
 
 export default class EmbedURL extends Component {
@@ -17,7 +19,7 @@ export default class EmbedURL extends Component {
 
   static get defaultProps(){
     return {
-      type: URLTypes.undefined
+      type: URLTypes.unknown
     };
   }
 
@@ -58,6 +60,7 @@ export default class EmbedURL extends Component {
         </x-embed-url>
       );
     }
+    case URLTypes.unknown:
     default: {
       return (
         <x-embed-url>
