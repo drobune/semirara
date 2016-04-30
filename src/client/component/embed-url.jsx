@@ -29,6 +29,10 @@ export default class EmbedURL extends Component {
     };
   }
 
+  shouldComponentUpdate(nextProps, nextStates){
+    return this.state.type !== nextStates.type;
+  }
+
   constructor(){
     super();
     this.onImage = this.onImage.bind(this);
