@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 
 const debug = require("../../share/debug")(__filename)
-require("dotenv").config({path: ".env"})
+//require("dotenv").config({path: ".env"})
 
 for(let key of ["GITHUB_CLIENT_ID", "GITHUB_CLIENT_SECRET"]){
   if(typeof process.env[key] !== "string"){
